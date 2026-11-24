@@ -13,7 +13,11 @@ case "$APP_URL" in https://*) ;; *) echo 'A public HTTPS APP_URL is required.' >
 : "${APP_KEY:?Set a stable production APP_KEY in Render.}"
 : "${DB_CONNECTION:?Configure the hosted database.}"
 # Render secret files remain outside the source repository and image layers.
-if [ -f /etc/secrets/database-ca.pem ]; then export DB_SSLROOTCERT=/etc/secrets/database-ca.pem; fi
+if [ -f /etc/secrets/database-ca.pem ]; then
+    install -d -m 755 /run/navyra
+    install -m 644 /etc/secrets/database-ca.pem /run/navyra/database-ca.pem
+    export DB_SSLROOTCERT=/run/navyra/database-ca.pem
+fi
 printf 'Listen %s\n' "$PORT" > /etc/apache2/ports.conf
 sed -i "s/<VirtualHost \*:10000>/<VirtualHost *:$PORT>/" /etc/apache2/sites-available/000-default.conf
 php artisan config:cache --no-interaction
