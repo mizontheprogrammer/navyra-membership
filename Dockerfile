@@ -1,6 +1,6 @@
 FROM php:8.5-apache AS php-base
 RUN apt-get update && apt-get install -y --no-install-recommends git unzip libicu-dev libzip-dev libonig-dev libpq-dev supervisor ca-certificates \
-    && docker-php-ext-install -j$(nproc) pdo_mysql pdo_pgsql intl mbstring zip bcmath pcntl opcache \
+    && docker-php-ext-install -j2 pdo_mysql pdo_pgsql intl mbstring zip bcmath pcntl \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer

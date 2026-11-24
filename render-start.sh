@@ -5,6 +5,7 @@ export APP_DEBUG=false
 export SESSION_SECURE_COOKIE=true
 export TRUST_PROXY_HEADERS=true
 export LOG_CHANNEL=stderr
+export PGCONNECT_TIMEOUT=10
 export APP_URL="${RENDER_EXTERNAL_URL:-${APP_URL:-}}"
 export PORT="${PORT:-10000}"
 case "$PORT" in ''|*[!0-9]*) echo 'Invalid PORT' >&2; exit 1;; esac
