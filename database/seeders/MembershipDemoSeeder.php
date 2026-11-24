@@ -79,7 +79,7 @@ class MembershipDemoSeeder extends Seeder
                     $start = today()->subDays(400);
                     $end = $start->copy()->addDays($transaction->validity_days - 1);
                     $transaction->update(['status' => 'Expired', 'starts_on' => $start, 'ends_on' => $end, 'approved_at' => $start]);
-                    $member->forceFill(['active' => false, 'joined_on' => $start, 'expires_on' => $end])->save();
+                    $member->refresh()->forceFill(['active' => false, 'joined_on' => $start, 'expires_on' => $end])->save();
                 }
                 if ($status === 'Cancelled') {
                     $processor->changeStatus($transaction, 'cancel', $admin->id);
