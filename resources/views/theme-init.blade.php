@@ -1,0 +1,1 @@
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('navyra-theme')||'light'}catch{}</script>

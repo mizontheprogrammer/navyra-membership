@@ -1,0 +1,5 @@
+@extends('workspace-layout')
+@section('title','Membership Record')
+@section('content')
+<div class="print-toolbar"><a href="{{ route('members.show',$member) }}">← Member profile</a><button type="button" onclick="window.print()">Print Record</button></div><section class="print-record"><p class="print-brand">NAVYRA MEMBERSHIP</p><h1>Membership record</h1><p>{{ $member->membership_number }}</p><hr><dl class="member-details">@foreach(['name'=>'Full name','category'=>'Category','level'=>'Level','company_name'=>'Company','email'=>'Email','phone'=>'Phone'] as $field=>$label)<div><dt>{{ $label }}</dt><dd>{{ $member->$field?:'Not provided' }}</dd></div>@endforeach<div><dt>Status</dt><dd>{{ $member->active?'Active':'Inactive' }}</dd></div><div><dt>Start date</dt><dd>{{ $member->joined_on?->format('M j, Y')??'Not approved' }}</dd></div><div><dt>Valid through</dt><dd>{{ $member->expires_on?->format('M j, Y')??($member->joined_on?'No expiry':'Not approved') }}</dd></div></dl><p class="member-input-hint">Printed {{ now()->format('M j, Y') }}</p></section>
+@endsection

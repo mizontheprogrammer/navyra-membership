@@ -1,0 +1,5 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Email Confirmation | Navyra</title>@vite(['resources/css/tasks.css'])</head><body class="auth-page"><main class="auth-card"><p class="print-brand">NAVYRA MEMBERSHIP</p><h1>{{ $application->email_verified_at?'Email confirmed':'Confirm your email' }}</h1><p>Application reference: <strong>{{ $application->reference_no }}</strong></p>
+@if($application->email_verified_at)<div class="member-notice" role="status">Your email is confirmed. The administrator can now review your application.</div><p>Membership approval and payment are handled separately. Keep your application reference.</p>
+@else<p>Click below to confirm that you own the email address used for this application.</p><form method="POST" action="{{ request()->fullUrl() }}">@csrf<button type="submit">Confirm my email</button></form>@endif
+<a href="{{ route('membership.create') }}">Back to application form</a></main></body></html>

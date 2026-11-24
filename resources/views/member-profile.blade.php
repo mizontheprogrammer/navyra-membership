@@ -1,0 +1,13 @@
+@extends('workspace-layout')
+@section('title','Member Profile')
+@section('content')
+<a class="member-back" href="{{ route('members.index') }}">← All members</a>
+<div class="console-heading"><div><h1>Member profile</h1><p>{{ $member->membership_number }}</p></div><div class="action-row"><a class="console-primary" href="{{ route('members.edit',$member) }}">Edit Details</a><a class="secondary-link" href="{{ route('members.record',$member) }}">Printable Record</a></div></div>
+<section class="member-panel member-profile"><div class="member-profile-heading"><span class="member-initial">{{ Str::upper(Str::substr($member->name,0,1)) }}</span><div><h2>{{ $member->name }}</h2><span class="member-status {{ $member->active?'':'inactive' }}">{{ $member->active?'Active':'Inactive' }}</span></div></div>
+<dl class="member-details">@foreach(['category'=>'Category','level'=>'Level','company_name'=>'Company','email'=>'Email','phone'=>'Phone'] as $field=>$label)<div><dt>{{ $label }}</dt><dd>{{ $member->$field ?: 'Not provided' }}</dd></div>@endforeach<div><dt>Membership start</dt><dd>{{ $member->joined_on?->format('M j, Y')??'No approved application yet' }}</dd></div><div><dt>Valid through</dt><dd>{{ $member->expires_on?->format('M j, Y')??($member->joined_on?'No expiry':'Not started') }}</dd></div></dl>
+<div class="action-row"><a class="console-primary" href="{{ route('transactions.create',['member'=>$member->id]) }}">New Application / Renewal</a><a href="{{ route('members.history',$member) }}">Transaction History</a></div>
+<div class="member-level-summary"><h3>{{ $member->level }} benefits</h3><p class="membership-benefits">{{ $member->membershipLevel->benefits?:'Not configured' }}</p></div>
+<div class="member-management-actions"><form class="membership-status-form" action="{{ route('members.status.confirm',$member) }}" method="GET"><div><label for="profile-status">Member status</label><select id="profile-status" name="active"><option value="1" @selected($member->active)>Active</option><option value="0" @selected(!$member->active)>Inactive</option></select></div><button class="member-secondary">Update Status</button></form>
+<details class="member-delete"><summary>Delete member</summary><p>Only members with no transactions can be deleted. Deactivate members to preserve history.</p><form action="{{ route('members.destroy',$member) }}" method="POST">@csrf @method('DELETE')<button class="member-danger">Confirm Delete</button></form></details></div></section>
+<section class="member-panel profile-transactions"><div class="section-heading"><h2>Recent transactions</h2><a href="{{ route('members.history',$member) }}">View all</a></div>@include('transaction-table',['transactions'=>$recentTransactions])</section>
+@endsection

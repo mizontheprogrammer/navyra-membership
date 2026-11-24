@@ -1,0 +1,1 @@
+<span class="navyra-brand"><img src="{{ asset('images/navyra-logo.png') }}" alt="" width="42" height="42"><span><strong>Navyra</strong><small>MEMBERSHIP</small></span></span>

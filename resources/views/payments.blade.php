@@ -1,0 +1,7 @@
+@extends('workspace-layout')
+@section('title','Payments')
+@section('content')
+<div class="console-heading"><div><h1>Recorded payments</h1><p>Payment records linked to valid membership transactions.</p></div><a class="console-primary" href="{{ route('payments.create') }}">+ Record Payment</a></div>
+<section class="member-panel"><form method="GET" class="member-search"><div><label for="search">Search</label><input id="search" name="search" value="{{ request('search') }}" placeholder="Receipt, transaction reference, or member"></div><button>Search</button><a href="{{ route('payments.index') }}">Reset</a></form>
+<div class="member-table-wrap"><table class="member-table"><thead><tr><th>Receipt</th><th>Member / Transaction</th><th>Amount (PHP)</th><th>Method</th><th>Date</th></tr></thead><tbody>@forelse($payments as $payment)<tr><td><a href="{{ route('payments.receipt',$payment) }}">{{ $payment->receipt_number }}</a>@if($payment->voided_at)<small class="void-label">VOIDED</small>@endif</td><td>{{ $payment->transaction->member_name }}<small><a href="{{ route('transactions.show',$payment->transaction) }}">{{ $payment->transaction->reference_number }}</a></small></td><td>{{ number_format((float)$payment->amount,2) }}</td><td>{{ $payment->method }}</td><td>{{ $payment->paid_on->format('M j, Y') }}</td></tr>@empty<tr><td colspan="5">No payments recorded.</td></tr>@endforelse</tbody></table></div>@include('simple-pagination',['records'=>$payments])</section>
+@endsection
