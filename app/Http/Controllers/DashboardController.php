@@ -14,6 +14,7 @@ class DashboardController extends Controller
         return view('dashboard', [
             'totalMembers' => Member::count(), 'activeMembers' => Member::where('active', true)->count(),
             'pendingTransactions' => MembershipTransaction::where('status', 'Pending')->count(),
+            'demoMembers' => Member::whereLike('membership_number', 'DEMO-MEM-%')->count(),
             'collectedPayments' => Payment::whereNull('voided_at')->sum('amount'), 'recentTransactions' => MembershipTransaction::latest()->limit(5)->get(),
         ]);
     }
